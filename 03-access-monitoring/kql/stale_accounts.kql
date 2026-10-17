@@ -1,0 +1,50 @@
+kql
+# Enterprise Healthcare Identity & Access Management (IAM) Portfolio
+
+## Overview
+This repository showcases an enterprise-grade **Identity and Access Management (IAM)** framework built within **Microsoft Entra ID**. Designed specifically for a regulated healthcare environment, this project demonstrates how to enforce strict compliance standards—such as **HIPAA** and **HITECH**—by automating identity lifecycles, enforcing least-privilege role-based access control (RBAC), and monitoring security audit logs for anomalies.
+
+---
+
+## Architecture & Project Pillars
+
+### Part 1: Identity Lifecycle Management (JML Automation)
+Managing the Joiner-Mover-Leaver (JML) lifecycle securely is critical for preventing unauthorized access to electronic Protected Health Information (ePHI).
+* **Joiner/Mover Automation:** Utilizes Entra ID **Dynamic User Groups** to automatically evaluate HR department attributes (e.g., transitioning from `Billing and Revenue` to `Intensive Care Unit`) and dynamically update access permissions without manual IT intervention.
+* **Leaver Remediation:** Implements automated account deactivation and active token revocation scripts (`leaver_remediation.ps1`) to ensure immediate termination of access when personnel depart.
+
+### Part 2: Role-Based Privilege & Least Privilege Enforcement (RBAC)
+To prevent unauthorized viewing or manipulation of sensitive healthcare databases, granular role separation is enforced through custom application architecture.
+* **App Roles:** Registered a mock enterprise EMR portal (`Enterprise EMR Portal (Simulation)`) featuring custom app roles mapped to specific clinical and financial boundaries:
+  * `Clinical.Read`: Read-only access to patient vitals and medical notes for clinical staff.
+  * `Billing.Manage`: Access restricted to the revenue ledger and insurance processing logs.
+  * `System.BreakGlass`: Time-bound emergency override access for critical system failures.
+
+### Part 3: Access Control Monitoring & Auditing
+Continuous monitoring and auditing ensure compliance with internal policies and external security regulations.
+* **KQL Security Queries:** Leverages custom **Kusto Query Language (KQL)** scripts integrated with Entra ID audit and sign-in logs to detect high-risk activity:
+  * `stale_accounts.kql`: Flags dormant accounts inactive for over 90 days.
+  * `privileged_audit.kql`: Tracks modifications to high-privilege administrative roles to prevent unauthorized privilege escalation.
+
+---
+
+## Repository Structure
+
+```text
+entra-healthcare-iam-portfolio/
+│
+├── 01-lifecycle-management/
+│   ├── dynamic-groups/
+│   │   └── icu_department_rule.txt
+│   └── scripts/
+│       └── leaver_remediation.ps1
+│
+├── 02-rbac-least-privilege/
+│   └── app_roles_definition.json
+│
+├── 03-access-monitoring/
+│   └── kql/
+│       ├── stale_accounts.kql
+│       └── privileged_audit.kql
+│
+└── README.md
