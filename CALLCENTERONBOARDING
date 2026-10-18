@@ -1,0 +1,3 @@
+### Part 1 Extension: Call Center Onboarding & Manager Hierarchy
+* **Automated Provisioning:** Evaluates incoming `Patient Access Services` department attributes to route call center reps into restricted communication groups.
+* **Organizational Structure:** Enforces direct reporting lines by linking user accounts to designated department managers within Entra ID for compliance and approval chains.
